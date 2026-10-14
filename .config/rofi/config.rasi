@@ -1,0 +1,83 @@
+configuration {
+    modi: "drun,run,window";
+    show-icons: true;
+    display-drun: "Apps";
+    drun-display-format: "{name}";
+    font: "DejaVu Sans Mono 11";
+}
+
+* {
+    bg: #0F1A2Bee;
+    bg-alt: #162338;
+    fg: #E6F1FF;
+    dim: #7C93AD;
+    accent: #7DD3FC;
+    background-color: transparent;
+    text-color: @fg;
+}
+
+window {
+    width: 560px;
+    location: north;
+    anchor: north;
+    y-offset: 120px;
+    background-color: @bg;
+    border: 1px;
+    border-color: #407DD3FC;
+    border-radius: 16px;
+    padding: 14px;
+}
+
+mainbox {
+    spacing: 10px;
+    children: [inputbar, listview];
+}
+
+inputbar {
+    background-color: @bg-alt;
+    border-radius: 12px;
+    padding: 10px 14px;
+    spacing: 10px;
+    children: [prompt, entry];
+}
+
+
+
+listview {
+    lines: 8;
+    columns: 1;
+    spacing: 4px;
+    scrollbar: false;
+}
+
+element {
+    padding: 8px 12px;
+    border-radius: 10px;
+    spacing: 10px;
+}
+
+element selected.normal {
+    background-color: #267DD3FC;
+    text-color: @accent;
+}
+
+element-icon {
+    size: 24px;
+    background-color: transparent;
+}
+
+element-text {
+    text-color: inherit;
+    vertical-align: 0.5;
+}
+
+prompt {
+    expand: false;
+    text-color: #7DD3FC;
+}
+
+entry {
+    expand: true;
+    text-color: #E6F1FF;
+    cursor-color: #7DD3FC;
+}

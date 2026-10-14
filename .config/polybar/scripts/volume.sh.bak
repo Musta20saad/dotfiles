@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+source ~/.config/polybar/scripts/lib.sh
+show() {
+  vol=$(pactl get-sink-volume @DEFAULT_SINK@ | grep -oP '\d+(?=%)' | head -1)
+  mute=$(pactl get-sink-mute @DEFAULT_SINK@ | awk '{print $2}')
+  if [ "$mute" = "yes" ]; then
+    echo "%{F#F87171}%{T2}$(icon f026)%{T-}%{F-}"
+  else
+    if [ "$vol" -ge 50 ]; then g=f028; elif [ "$vol" -gt 0 ]; then g=f027; else g=f026; fi
+    echo "%{F#93C5FD}%{T2}$(icon $g)%{T-}%{F-} ${vol}%"
+  fi
+}
+show
+pactl subscribe | grep --line-buffered -E "on (sink|server)" | while read -r _; do show; done

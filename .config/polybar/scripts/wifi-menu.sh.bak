@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+THEME='window {width: 380px; location: northeast; anchor: northeast; x-offset: -12px; y-offset: 48px; background-color: #0F1A2B; border: 1px; border-color: #7DD3FC; border-radius: 14px;} mainbox {background-color: transparent;} inputbar {background-color: #162338; text-color: #E6F1FF; padding: 8px; border-radius: 10px; margin: 0 0 6px 0;} prompt {text-color: #7DD3FC;} entry {text-color: #E6F1FF;} listview {lines: 9; background-color: transparent;} element {padding: 6px 10px; border-radius: 8px; background-color: transparent; text-color: #E6F1FF;} element selected {background-color: #267DD3FC; text-color: #7DD3FC;}'
+
+if [ "$(nmcli radio wifi)" = "disabled" ]; then
+  c=$(printf "Turn Wi-Fi on" | rofi -dmenu -i -p "Wi-Fi" -theme-str "$THEME")
+  [ -n "$c" ] && nmcli radio wifi on
+  exit
+fi
+
+nmcli dev wifi rescan >/dev/null 2>&1
+mapfile -t rows < <(nmcli -t -f IN-USE,SIGNAL,SECURITY,SSID dev wifi list | awk -F: '$4!="" && !seen[$4]++')
+display=(); ssids=(); secs=()
+for r in "${rows[@]}"; do
+  IFS=: read -r inuse sig sec ssid <<< "$r"
+  mark="   "; [ "$inuse" = "*" ] && mark="●  "
+  lock="open"; [ -n "$sec" ] && lock="lock"
+  display+=("$(printf '%s%-3s%%  [%s]  %s' "$mark" "$sig" "$lock" "$ssid")")
+  ssids+=("$ssid"); secs+=("$sec")
+done
+
+idx=$(printf '%s\n' "Turn Wi-Fi off" "Advanced settings" "${display[@]}" | rofi -dmenu -i -p "Wi-Fi" -format i -theme-str "$THEME")
+[ -z "$idx" ] && exit
+[ "$idx" -eq 0 ] && { nmcli radio wifi off; exit; }
+[ "$idx" -eq 1 ] && { nm-connection-editor; exit; }
+idx=$((idx-2))
+
+ssid=${ssids[$idx]}; sec=${secs[$idx]}
+if nmcli -t -f NAME connection show | grep -Fxq "$ssid"; then
+  nmcli connection up id "$ssid" && notify-send "Wi-Fi" "Connected to $ssid"
+elif [ -n "$sec" ]; then
+  pass=$(rofi -dmenu -password -p "Password" -theme-str "$THEME" < /dev/null)
+  [ -n "$pass" ] && nmcli dev wifi connect "$ssid" password "$pass" && notify-send "Wi-Fi" "Connected to $ssid"
+else
+  nmcli dev wifi connect "$ssid" && notify-send "Wi-Fi" "Connected to $ssid"
+fi

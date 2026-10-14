@@ -1,0 +1,72 @@
+* {
+    background-color: transparent;
+    text-color: #E6F1FF;
+}
+
+window {
+    width: 380px;
+    location: northeast;
+    anchor: northeast;
+    x-offset: -12px;
+    y-offset: 44px;
+    background-color: rgba ( 15, 26, 43, 96 % );
+    border: 1px;
+    border-color: rgba ( 125, 211, 252, 35 % );
+    border-radius: 16px;
+    padding: 12px;
+}
+
+mainbox {
+    spacing: 8px;
+    children: [ inputbar, message, listview ];
+}
+
+inputbar {
+    background-color: #162338;
+    border-radius: 10px;
+    padding: 8px 12px;
+    spacing: 8px;
+    children: [ prompt, entry ];
+}
+
+prompt {
+    text-color: #7DD3FC;
+}
+
+entry {
+    text-color: #E6F1FF;
+    cursor-color: #7DD3FC;
+}
+
+message {
+    background-color: #162338;
+    border-radius: 10px;
+    padding: 8px 12px;
+}
+
+textbox {
+    text-color: #E6F1FF;
+    markup: true;
+}
+
+listview {
+    lines: 12;
+    fixed-height: false;
+    scrollbar: false;
+    spacing: 2px;
+}
+
+element {
+    padding: 8px 10px;
+    border-radius: 10px;
+}
+
+element selected.normal {
+    background-color: rgba ( 125, 211, 252, 18 % );
+    text-color: #7DD3FC;
+}
+
+element-text {
+    text-color: inherit;
+    markup: true;
+}

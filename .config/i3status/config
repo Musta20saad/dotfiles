@@ -1,0 +1,71 @@
+general {
+    colors = true
+    interval = 5
+    separator = "  ·  "
+    color_good = "#A3BE8C"
+    color_degraded = "#EBCB8B"
+    color_bad = "#BF616A"
+}
+
+order += "wireless _first_"
+order += "ethernet _first_"
+order += "cpu_usage"
+order += "memory"
+order += "disk /"
+order += "volume master"
+order += "battery all"
+order += "tztime local"
+
+wireless _first_ {
+    format_up = "WiFi %essid %quality"
+    format_down = "WiFi off"
+}
+
+ethernet _first_ {
+    format_up = "ETH %ip"
+    format_down = ""
+}
+
+cpu_usage {
+    format = "CPU %usage"
+    degraded_threshold = 60
+    max_threshold = 85
+}
+
+memory {
+    format = "RAM %used"
+    threshold_degraded = "20%"
+    threshold_critical = "10%"
+}
+
+disk "/" {
+    format = "SSD %avail free"
+    low_threshold = 10
+    threshold_type = percentage_avail
+}
+
+volume master {
+    format = "VOL %volume"
+    format_muted = "VOL muted"
+    device = "default"
+    mixer = "Master"
+    mixer_idx = 0
+}
+
+battery all {
+    format = "%status %percentage %remaining"
+    format_down = "No battery"
+    status_chr = "CHG"
+    status_bat = "BAT"
+    status_unk = "BAT"
+    status_full = "FULL"
+    path = "/sys/class/power_supply/BAT%d/uevent"
+    integer_battery_capacity = true
+    last_full_capacity = true
+    low_threshold = 15
+    threshold_type = percentage
+}
+
+tztime local {
+    format = "%a %d %b  %I:%M %p"
+}

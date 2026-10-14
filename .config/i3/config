@@ -1,0 +1,153 @@
+# =====================================================================
+#  TOKYO NIGHT FULL CONFIGURATION
+# =====================================================================
+
+set $mod Mod4
+font pango:DejaVu Sans Mono 10
+floating_modifier $mod
+
+# Audio Volume Adjustments
+
+# App Shortcuts
+bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+d exec --no-startup-id rofi -show drun -show-icons
+bindsym $mod+Shift+q kill
+
+# Minimize / Restore (Scratchpad)
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus scratchpad show
+bindsym $mod+Shift+space floating toggle
+
+# Navigation
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# Layouts
+bindsym $mod+h split h
+bindsym $mod+v split v
+bindsym $mod+f fullscreen toggle
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+bindsym $mod+space focus mode_toggle
+
+# Named Workspaces
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+
+bindsym $mod+1 workspace number $ws1
+bindsym $mod+2 workspace number $ws2
+bindsym $mod+3 workspace number $ws3
+bindsym $mod+4 workspace number $ws4
+bindsym $mod+5 workspace number $ws5
+
+bindsym $mod+Shift+1 move container to workspace number $ws1
+bindsym $mod+Shift+2 move container to workspace number $ws2
+bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym $mod+Shift+4 move container to workspace number $ws4
+bindsym $mod+Shift+5 move container to workspace number $ws5
+
+# System Management
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+
+# Tokyo Night Top Status Bar & Frame Styling
+
+client.focused          #7aa2f7 #24283b #ffffff #7aa2f7 #7aa2f7
+client.unfocused        #1a1b26 #16161e #787c99 #1a1b26 #1a1b26
+
+# Automations & Wallpaper
+exec_always --no-startup-id numlockx on
+exec_always --no-startup-id feh --bg-scale /home/mustafa/Downloads/1240043.jpg
+
+# Polybar + picom
+exec_always --no-startup-id ~/.config/polybar/launch.sh
+exec --no-startup-id picom --config ~/.config/picom/picom.conf
+bindsym $mod+Shift+e exec --no-startup-id ~/.config/i3/powermenu.sh
+
+# extra workspaces 6-9
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+bindsym $mod+6 workspace number $ws6
+bindsym $mod+7 workspace number $ws7
+bindsym $mod+8 workspace number $ws8
+bindsym $mod+9 workspace number $ws9
+bindsym $mod+Shift+6 move container to workspace number $ws6
+bindsym $mod+Shift+7 move container to workspace number $ws7
+bindsym $mod+Shift+8 move container to workspace number $ws8
+bindsym $mod+Shift+9 move container to workspace number $ws9
+
+bindsym Print exec --no-startup-id flameshot gui
+
+# Brightness keys
+
+# no borders or title bars, picom handles the rounded look
+default_border pixel 0
+default_floating_border pixel 0
+for_window [class=".*"] border pixel 0
+
+
+# window gaps
+
+gaps inner 4
+gaps outer 2
+gaps top 33
+
+exec_always --no-startup-id ~/.config/i3/autotile.sh
+
+# USB auto-mount and eject all with Mod+Shift+u
+exec --no-startup-id udiskie -a -n -T
+bindsym $mod+Shift+u exec --no-startup-id udiskie-umount --all
+
+# RESIZE MODE
+
+mode "resize" {
+    bindsym Left  resize shrink width  10 px or 10 ppt
+    bindsym Down  resize grow   height 10 px or 10 ppt
+    bindsym Up    resize shrink height 10 px or 10 ppt
+    bindsym Right resize grow   width  10 px or 10 ppt
+
+    bindsym h resize shrink width  10 px or 10 ppt
+    bindsym j resize grow   height 10 px or 10 ppt
+    bindsym k resize shrink height 10 px or 10 ppt
+    bindsym l resize grow   width  10 px or 10 ppt
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym $mod+r mode "default"
+}
+bindsym $mod+r mode "resize"
+
+# FLOATING RULES
+
+for_window [window_role="pop-up"]      floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [window_type="dialog"]      floating enable
+
+for_window [class="(?i)pavucontrol"]          floating enable, resize set 800 500, move position center
+for_window [class="(?i)nm-connection-editor"] floating enable, move position center
+for_window [class="(?i)blueman-manager"]      floating enable, move position center
+
+# KEYBOARD LAYOUTS: Alt+Shift switches between English and Arabic
+
+exec_always --no-startup-id setxkbmap -layout us,ara -option "" -option grp:alt_shift_toggle
+exec picom -b
+
+# OSD popups (volume / brightness)
+bindsym XF86AudioRaiseVolume exec --no-startup-id ~/.config/polybar/scripts/osd.sh volume up
+bindsym XF86AudioLowerVolume exec --no-startup-id ~/.config/polybar/scripts/osd.sh volume down
+bindsym XF86AudioMute exec --no-startup-id ~/.config/polybar/scripts/osd.sh volume mute
+bindsym XF86MonBrightnessUp exec --no-startup-id ~/.config/polybar/scripts/osd.sh brightness up
+bindsym XF86MonBrightnessDown exec --no-startup-id ~/.config/polybar/scripts/osd.sh brightness down
+exec_always --no-startup-id ~/.config/polybar/scripts/start-dunst.sh

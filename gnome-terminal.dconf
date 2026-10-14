@@ -1,0 +1,13 @@
+[legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9]
+background-color='#121212'
+background-transparency-percent=12
+bold-color-same-as-fg=true
+cursor-background-color='#FFD54F'
+cursor-colors-set=true
+cursor-foreground-color='#121212'
+font='DejaVu Sans Mono 14'
+foreground-color='#E8E8E8'
+palette=['#3A3A3A', '#FF6B6B', '#69F0AE', '#FFE082', '#82B1FF', '#FF80AB', '#84FFFF', '#E8E8E8', '#9E9E9E', '#FF9E9E', '#9BFFC9', '#FFECB3', '#B3CFFF', '#FFB3CC', '#B8FFFF', '#FFFFFF']
+use-system-font=false
+use-theme-colors=false
+use-transparent-background=false
