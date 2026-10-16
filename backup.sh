@@ -6,6 +6,7 @@ for d in i3 polybar picom i3status rofi dunst; do
   rm -rf ".config/$d"
   [ -d "$HOME/.config/$d" ] && cp -r "$HOME/.config/$d" .config/
 done
+find .config -name '*.bak*' -delete          # leave installer backups out of the repo
 command -v dconf >/dev/null && dconf dump /org/gnome/terminal/ > gnome-terminal.dconf
 git add -A
 git commit -q -m "Update dotfiles $(date +%F)" || echo "No changes to save"
